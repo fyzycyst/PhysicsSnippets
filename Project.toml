@@ -1,0 +1,12 @@
+name = "PhysicsSnippets"
+version = "0.1.0"
+authors = ["fyzycyst"]
+
+[deps]
+CairoMakie = "13f3f980-c62c-5f9a-8e00-15fe27f943e8"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+
+[compat]
+julia = "1.6"
+CairoMakie = "0.10"

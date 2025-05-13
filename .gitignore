@@ -1,0 +1,21 @@
+# Julia specific files
+*.jl.*.cov
+*.jl.cov
+*.jl.mem
+/Manifest.toml
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Environment files
+.env
+.env.*
+
+# Build artifacts
+/build/
+/dist/ 
