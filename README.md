@@ -1,60 +1,74 @@
-# Physics Snippets
+# PhysicsSnippets
 
-A collection of physics-based examples and visualizations implemented in Julia. These examples are designed to be both educational and visually engaging, making them suitable for physicists learning Julia or anyone interested in computational physics.
+A collection of beginner-to-intermediate level physics simulations and models in Julia, designed for learning Julia, exploring its scientific computing ecosystem, and creating interesting visualizations.
 
-## Examples
+## Project Structure
 
-### 1. Monte Carlo Pi Estimation
-- **Description**: Estimates π using the Monte Carlo method by randomly sampling points in a square and counting those that fall within an inscribed circle.
-- **Files**:
-  - `monte_carlo_pi.jl`: Basic implementation with visualization
-  - `monte_carlo_pi_convergence.jl`: Analysis of convergence and performance
-- **[Detailed documentation →](examples/monte_carlo_pi/README.md)** 
+```
+/PhysicsSnippets
+    /src
+        /01_PlanetaryOrbits
+        /02_DoublePendulum
+        /03_ElectricFieldLines
+        /04_QuantumParticleInBox
+        /05_IdealGasSimulation
+        /06_RayTracingOptics
+        /07_HeatEquation
+        /08_HarmonicOscillator
+        /09_MonteCarloPi
+        /10_LorentzAttractor
+        /11_ProjectileMotion
+        /12_ChargedParticleMagneticField
+        /13_WaveInterference
+        /14_ElectrostaticPotential
+    /docs
+    Project.toml
+    README.md
+```
 
-### 2. Harmonic Oscillator Simulation
-- **Description**: Simulates a simple harmonic oscillator (mass on a spring) using Julia.
-- **Files**:
-  - `harmonic_oscillator.jl`: Demonstrates best practices for ODE modeling, numerical integration, and scientific plotting in Julia.
-- **[Detailed documentation →](examples/harmonic_oscillator/README.md)**
+## Available Snippets
 
-### 3. Planetary Orbits Simulation
-- **Description**: Simulates the orbits of Mercury, Venus, Earth, and Mars around the Sun using Newtonian gravity and visualizes their paths.
-- **Files**:
-  - `planetary_orbits.jl`: Main simulation and visualization script
-- **[Detailed documentation →](examples/planetary_orbits/README.md)**
+1. **Planetary Orbits**: Simulate planetary motion using Newton's law of gravitation
+2. **Double Pendulum**: Model chaotic motion of a double pendulum
+3. **Electric Field Lines**: Calculate and visualize electric fields from point charges
+4. **Quantum Particle in a Box**: Solve the time-independent Schrödinger equation
+5. **Ideal Gas Simulation**: Simulate particle motion and collisions in a 2D box
+6. **Ray Tracing for Optics**: Model light ray paths through a converging lens
+7. **Heat Equation**: Solve heat diffusion in 1D or 2D
+8. **Harmonic Oscillator**: Simulate a mass-spring system
+9. **Monte Carlo Pi Estimation**: Estimate π using random sampling
+10. **Lorentz Attractor**: Simulate the famous chaotic system
+11. **Projectile Motion**: Model trajectories with air resistance
+12. **Charged Particle in Magnetic Field**: Simulate helical motion in a B-field
+13. **Wave Interference**: Model interference patterns from wave sources
+14. **Electrostatic Potential**: Solve Laplace's equation for electric potential
 
-## Requirements
-
-- Julia 1.6 or higher
-- Required packages:
-  - CairoMakie
-  - StaticArrays
-  - Unitful
-  - UnitfulAstro
-  - Random
-  - Statistics
-  - DifferentialEquations
-  - Test
-
-## Installation
+## Getting Started
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/fyzycyst/PhysicsSnippets.git
+git clone https://github.com/yourusername/PhysicsSnippets.git
 cd PhysicsSnippets
 ```
 
-2. Install required packages:
+2. Start Julia and activate the project:
 ```julia
-julia --project -e 'using Pkg; Pkg.instantiate()'
+julia> using Pkg
+julia> Pkg.activate(".")
+julia> Pkg.instantiate()
 ```
 
-## Usage
-
-Each example can be run directly with Julia. For example:
-```bash
-julia monte_carlo_pi.jl
+3. Run any snippet:
+```julia
+julia> include("src/01_PlanetaryOrbits/planetary_orbits.jl")
 ```
+
+## Dependencies
+
+- Julia 1.6 or later
+- DifferentialEquations.jl
+- Makie.jl
+- Other packages as needed for specific snippets
 
 ## Contributing
 

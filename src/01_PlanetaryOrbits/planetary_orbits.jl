@@ -4,13 +4,19 @@ using StaticArrays
 using Unitful
 using UnitfulAstro
 using LinearAlgebra
+using Test
 
-# Constants
-const G = 6.67430e-11u"m^3/kg/s^2"  # Gravitational constant
-const AU = 149597870700u"m"         # Astronomical Unit
-const M_sun = 1.989e30u"kg"         # Solar mass
+"""
+    Planet
 
-# Planet data structure
+Represents a planet in the solar system simulation.
+
+# Fields
+- `name::String`: Name of the planet
+- `mass::typeof(1.0u"kg")`: Mass of the planet in kilograms
+- `initial_position::SVector{3,typeof(1.0u"m")}`: Initial position vector in meters
+- `initial_velocity::SVector{3,typeof(1.0u"m/s")}`: Initial velocity vector in meters per second
+"""
 struct Planet
     name::String
     mass::typeof(1.0u"kg")
@@ -18,11 +24,26 @@ struct Planet
     initial_velocity::SVector{3,typeof(1.0u"m/s")}
 end
 
-# Function to calculate acceleration due to gravity
+# Physical constants with units
+const G = 6.67430e-11u"m^3/kg/s^2"  # Gravitational constant
+const AU = 149597870700u"m"         # Astronomical Unit
+const M_sun = 1.989e30u"kg"         # Solar mass
+
 """
     gravity_acceleration!(du, u, p, t)
 
-ODE function for planetary orbits. Each planet feels only the Sun's gravity (fixed at the origin).
+Compute the acceleration of planets due to the Sun's gravity.
+
+# Arguments
+- `du`: Vector to store the derivatives (velocities and accelerations)
+- `u`: State vector containing positions and velocities of all planets
+- `p`: Parameters tuple containing (G, M_sun)
+- `t`: Current time
+
+# Notes
+- Each planet feels only the Sun's gravity (fixed at the origin)
+- The state vector u is organized as [x₁, y₁, z₁, vx₁, vy₁, vz₁, x₂, y₂, z₂, vx₂, vy₂, vz₂, ...]
+- The derivative vector du is organized as [vx₁, vy₁, vz₁, ax₁, ay₁, az₁, vx₂, vy₂, vz₂, ax₂, ay₂, az₂, ...]
 """
 function gravity_acceleration!(du, u, p, t)
     G, M_sun = p
@@ -39,7 +60,18 @@ function gravity_acceleration!(du, u, p, t)
     end
 end
 
-# Function to calculate total energy of the system
+"""
+    calculate_energy(u, p)
+
+Calculate the total energy (kinetic + potential) of the system.
+
+# Arguments
+- `u`: State vector containing positions and velocities
+- `p`: Parameters tuple containing (G, masses, positions)
+
+# Returns
+- Total energy of the system in joules
+"""
 function calculate_energy(u, p)
     G, masses, positions = p
     T = 0.0  # Kinetic energy
@@ -63,22 +95,59 @@ function calculate_energy(u, p)
     return T + V
 end
 
-# Helper function to strip units
+"""
+    strip_units(x::Quantity)
+
+Strip units from a Quantity type, returning the raw value.
+
+# Arguments
+- `x::Quantity`: A value with physical units
+
+# Returns
+- The raw value without units
+"""
 function strip_units(x::Quantity)
     return ustrip(x)
 end
 
-# Main simulation function
+"""
+    strip_units(x::SVector{N,T}) where {N,T<:Quantity}
+
+Strip units from an SVector of Quantity types.
+
+# Arguments
+- `x::SVector{N,T}`: A vector of values with physical units
+
+# Returns
+- SVector of raw values without units
+"""
+function strip_units(x::SVector{N,T}) where {N,T<:Quantity}
+    return SVector(ustrip.(x)...)
+end
+
 """
     simulate_solar_system(tspan=(0.0, 687*86400.0))
 
-Simulate the inner solar system for one Martian year (687 days, in seconds).
-Returns the solution and planet list.
+Simulate the inner solar system for one Martian year.
+
+# Arguments
+- `tspan`: Time span for simulation in seconds (default: one Martian year)
+
+# Returns
+- `sol`: ODE solution containing the simulation results
+- `planets`: Array of Planet structs with initial conditions
+
+# Notes
+- Simulates Mercury, Venus, Earth, and Mars
+- Uses Tsit5 integrator with high precision
+- Daily output points for smooth visualization
 """
 function simulate_solar_system(tspan=(0.0, 687*86400.0))  # 1 Mars year in seconds
     # Compute correct circular velocity for Mars
     mars_r = 1.524 * AU
     mars_v = sqrt(G * M_sun / mars_r)
+    
+    # Define planets with initial conditions
     planets = [
         Planet("Mercury", 3.285e23u"kg", 
                SVector(0.387*AU, 0.0u"m", 0.0u"m"),
@@ -106,11 +175,7 @@ function simulate_solar_system(tspan=(0.0, 687*86400.0))  # 1 Mars year in secon
                      strip_units(p.initial_velocity[3])])
     end
     
-    # Debug: print initial position and velocity for Earth
-    # println("Initial position for Earth (m): ", [strip_units(planets[3].initial_position[i]) for i in 1:3])
-    # println("Initial velocity for Earth (m/s): ", [strip_units(planets[3].initial_velocity[i]) for i in 1:3])
-    
-    # Parameters for the ODE solver: just G and M_sun
+    # Parameters for the ODE solver
     p = (strip_units(G), strip_units(M_sun))
     
     # Solve the ODE
@@ -120,11 +185,22 @@ function simulate_solar_system(tspan=(0.0, 687*86400.0))  # 1 Mars year in secon
     return sol, planets
 end
 
-# Visualization function
 """
     plot_orbits_2d(sol, planets)
 
-Plot the orbits in the x-y plane (2D) with the Sun at the origin.
+Plot the orbits in the x-y plane with the Sun at the origin.
+
+# Arguments
+- `sol`: ODE solution containing the simulation results
+- `planets`: Array of Planet structs with initial conditions
+
+# Returns
+- `fig`: Makie figure object containing the plot
+
+# Notes
+- Shows orbits of all planets
+- Marks start and end positions
+- Includes grid lines and legend
 """
 function plot_orbits_2d(sol, planets)
     fig = Figure()
@@ -139,7 +215,7 @@ function plot_orbits_2d(sol, planets)
     colors = [:red, :orange, :blue, :brown]
     handles = []
     labels = []
-    # Orbits and planet markers
+    
     # First, collect start and end handles for Mercury (for legend order)
     x1 = [sol[j][1]/strip_units(AU) for j in 1:length(sol)]
     y1 = [sol[j][2]/strip_units(AU) for j in 1:length(sol)]
@@ -149,7 +225,8 @@ function plot_orbits_2d(sol, planets)
     push!(labels, "Start")
     push!(handles, h_end)
     push!(labels, "End")
-    # Now plot all orbits and markers
+    
+    # Plot all orbits and markers
     for (i, p) in enumerate(planets)
         x = [sol[j][6i-5]/strip_units(AU) for j in 1:length(sol)]
         y = [sol[j][6i-4]/strip_units(AU) for j in 1:length(sol)]
@@ -157,17 +234,35 @@ function plot_orbits_2d(sol, planets)
         h1 = lines!(ax, x, y, color=colors[i])
         push!(handles, h1)
         push!(labels, p.name)
-        # Mark starting and ending positions for all planets (not in legend)
+        # Mark starting and ending positions
         scatter!(ax, [x[1]], [y[1]], color=colors[i], marker=:circle, markersize=8)
         scatter!(ax, [x[end]], [y[end]], color=colors[i], marker=:rect, markersize=8)
     end
-    # Sun
+    
+    # Add Sun
     h_sun = scatter!(ax, [0.0], [0.0], color=:yellow, marker=:star5, markersize=16)
     push!(handles, h_sun)
     push!(labels, "Sun")
+    
     # Place legend in second column
     Legend(fig[1, 2], handles, labels)
     return fig
+end
+
+# Run tests to verify the simulation
+@testset "Planetary Orbits" begin
+    # Test energy conservation
+    sol, planets = simulate_solar_system()
+    initial_energy = calculate_energy(sol[1], (strip_units(G), [strip_units(p.mass) for p in planets], 
+                                             [strip_units(p.initial_position) for p in planets]))
+    final_energy = calculate_energy(sol[end], (strip_units(G), [strip_units(p.mass) for p in planets], 
+                                             [strip_units(p.initial_position) for p in planets]))
+    @test abs(final_energy - initial_energy) / abs(initial_energy) < 1e-3
+    
+    # Test Mars returns to starting position
+    mars_start = SVector{3}(sol[1][19:21])  # Mars position at start
+    mars_end = SVector{3}(sol[end][19:21])  # Mars position at end
+    @test norm(mars_end - mars_start) / norm(mars_start) < 1e-3
 end
 
 # Run simulation and plot
