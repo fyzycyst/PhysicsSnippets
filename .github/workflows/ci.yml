@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        version:
+          - '1.9'  # Current stable
+        os:
+          - ubuntu-latest
+          - macOS-latest
+          - windows-latest
+        arch:
+          - x64
+
+    steps:
+      - uses: actions/checkout@v3
+      
+      - uses: julia-actions/setup-julia@v1
+        with:
+          version: ${{ matrix.version }}
+          arch: ${{ matrix.arch }}
+          
+      - uses: julia-actions/cache@v1
+      
+      - name: Install dependencies
+        run: |
+          julia --project -e 'using Pkg; Pkg.instantiate()'
+          
+      - name: Run tests
+        run: |
+          julia --project -e 'using Pkg; Pkg.test()'
+          
+      - name: Run linting
+        run: |
+          julia --project -e 'using Pkg; Pkg.add("JuliaFormatter"); using JuliaFormatter; format(".")'
+          
+      - name: Check formatting
+        run: |
+          julia --project -e 'using Pkg; Pkg.add("JuliaFormatter"); using JuliaFormatter; if !format("."; verbose=true, overwrite=false); exit(1); end'
+          
+      - name: Check documentation
+        run: |
+          julia --project -e 'using Pkg; Pkg.add("Documenter"); using Documenter; doctest(".")' 

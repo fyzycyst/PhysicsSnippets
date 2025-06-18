@@ -1,16 +1,18 @@
 name = "PhysicsSnippets"
-version = "0.1.0"
 authors = ["fyzycyst"]
+version = "0.1.0"
 
 [deps]
-DifferentialEquations = "0c46a032-eb83-5123-abaf-570d42b7fbaa"
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
-StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
-Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
-UnitfulAstro = "6112ee7a-1326-4c95-9650-69b6e1997666"
+DifferentialEquations = "0c46a032-eb83-5123-abaf-570d42b7fbaa"
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+JuliaFormatter = "98e50ef6-434e-11e9-1051-2b60c6c9e899"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
+UnitfulAstro = "6112ee07-acf9-5e0f-b108-d242c714bf9f"
 
 [compat]
-julia = "1.6"
 CairoMakie = "0.10"
+julia = "1.9"
