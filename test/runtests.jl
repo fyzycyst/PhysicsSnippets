@@ -1,5 +1,4 @@
 using Test
-using Pkg
 
 # Include the project
 using PhysicsSnippets

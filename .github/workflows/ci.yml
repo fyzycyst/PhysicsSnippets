@@ -1,5 +1,7 @@
 name: CI
 
+# Trigger CI: ensure file is saved and pushed
+
 on:
   pull_request:
     branches: [ main ]
