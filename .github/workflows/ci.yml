@@ -38,16 +38,16 @@ jobs:
           
       - name: Run tests
         run: |
-          julia --project=@. -e 'using Pkg; Pkg.test()'
+          julia --project -e 'using Pkg; Pkg.develop(path="."); Pkg.test()'
           
       - name: Run linting
         run: |
-          julia --project=@. -e 'using Pkg; Pkg.add("JuliaFormatter"); using JuliaFormatter; format(".")'
+          julia --project -e 'using Pkg; Pkg.add("JuliaFormatter"); using JuliaFormatter; format(".")'
           
       - name: Check formatting
         run: |
-          julia --project=@. -e 'using Pkg; Pkg.add("JuliaFormatter"); using JuliaFormatter; if !format("."; verbose=true, overwrite=false); exit(1); end'
+          julia --project -e 'using Pkg; Pkg.add("JuliaFormatter"); using JuliaFormatter; if !format("."; verbose=true, overwrite=false); exit(1); end'
           
       - name: Check documentation
         run: |
-          julia --project=@. -e 'using Pkg; Pkg.add("Documenter"); using Documenter; doctest(".")' 
+          julia --project -e 'using Pkg; Pkg.add("Documenter"); using Documenter; doctest(".")' 
