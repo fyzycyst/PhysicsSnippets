@@ -1,5 +1,7 @@
 # PhysicsSnippets
 
+<!-- Trigger CI: trivial change -->
+
 A collection of beginner-to-intermediate level physics simulations and models in Julia, designed for learning Julia, exploring its scientific computing ecosystem, and creating interesting visualizations.
 
 ## Project Structure
