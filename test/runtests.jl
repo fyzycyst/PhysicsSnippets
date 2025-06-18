@@ -1,9 +1,6 @@
 using Test
 using Pkg
 
-# Activate the project environment
-Pkg.activate(@__DIR__)
-
 # Include the project
 using PhysicsSnippets
 
