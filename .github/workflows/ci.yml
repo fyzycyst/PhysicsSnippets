@@ -38,7 +38,7 @@ jobs:
           
       - name: Run tests
         run: |
-          julia --project -e 'using Pkg; Pkg.develop(path="."); Pkg.test()'
+          julia --project -e 'using Pkg; Pkg.test()'
           
       - name: Run linting
         run: |
