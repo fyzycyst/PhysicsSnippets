@@ -1,0 +1,47 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Git Workflow Rules
+
+## Branch Naming Convention
+- Use the format: `<type>/<description>`
+  - `<type>`: `feature`, `fix`, `docs`, `refactor`, `test`
+  - `<description>`: short, hyphen-separated summary
+  - Example: `feature/add-gravity-simulation`
+
+## Pull Request Workflow
+- Always create a new branch for any change, even in small projects.
+- Open a pull request (PR) for every change before merging.
+- PR description should include:
+  - Clear title summarizing the change
+  - Detailed description of what and why
+  - Related issue numbers (e.g., "Fixes #123")
+  - Screenshots or test results if applicable
+- Wait for CI checks to pass before merging.
+- If working solo, review your own PR with fresh eyes (e.g., next day) before merging.
+
+## Commit Messages
+- Use present tense, be specific, and start with a verb.
+- Keep the first line under 50 characters.
+- Optionally, add a detailed description after a blank line.
+- Example:
+  ```
+  Add gravity simulation to planetary orbits
+
+  - Implement Newton's law of gravitation
+  - Add unit tests for energy conservation
+  - Update documentation with usage examples
+  ```
+
+## Code Review Checklist
+- Before merging a PR, ensure:
+  - All automated tests and linting checks pass
+  - Documentation is updated if necessary
+  - The change is minimal and focused on a single task
+  - No unnecessary debug statements or commented-out code
+
+## Continuous Integration
+- Ensure CI (e.g., GitHub Actions) runs tests, linting, and formatting checks on every PR and push to main
+- Do not merge PRs if CI checks fail
