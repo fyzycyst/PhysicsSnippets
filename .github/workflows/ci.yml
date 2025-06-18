@@ -52,4 +52,4 @@ jobs:
           
       - name: Check documentation
         run: |
-          julia --project -e 'using Pkg; Pkg.add("Documenter"); using Documenter; doctest(".")' 
+          julia --project -e 'using Pkg; Pkg.add("Documenter"); using Documenter; doctest(PhysicsSnippets)' 
