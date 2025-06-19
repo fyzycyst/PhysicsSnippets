@@ -58,5 +58,5 @@ jobs:
             using Documenter;
             pushfirst!(LOAD_PATH, pwd());
             using PhysicsSnippets;
-            doctest(PhysicsSnippets)
+            doctest(PhysicsSnippets; manual = false, testset = "Documentation", source = "docs/src")
           ' 

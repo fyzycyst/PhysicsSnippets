@@ -18,4 +18,6 @@ Thumbs.db
 
 # Build artifacts
 /build/
-/dist/ 
+/dist/
+
+docs/ToDo.md 
