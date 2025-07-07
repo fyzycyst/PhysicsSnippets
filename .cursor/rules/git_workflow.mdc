@@ -1,6 +1,5 @@
 ---
-description: 
-globs: 
+description: Useful when interacting with GitHub repos
 alwaysApply: false
 ---
 # Git Workflow Rules

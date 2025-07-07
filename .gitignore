@@ -20,4 +20,5 @@ Thumbs.db
 /build/
 /dist/
 
-docs/ToDo.md 
+docs/ToDo.md
+workflow_state.md
