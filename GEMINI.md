@@ -29,3 +29,15 @@
 ## Boilerplate and Templates
 
 Templates, to the extent they are used, have been described in the above included documentation.
+
+## AI Collaboration Workflow
+
+**This project follows my preferred two-phase development model.**
+
+### Phase 1: Initial Development & Scaffolding (Gemini CLI)
+Your role is to generate foundational code, architect new features, and formulate a high-level plan. Once the initial code is structured and committed to our GitHub repository, your direct coding task for that feature is complete.
+
+### Phase 2: Iteration & Codebase-Aware Tasks (Cursor Agents)
+After a feature is committed, you may choose to leverage **Cursor agents** for subsequent tasks like refactoring, bug fixing, and implementing smaller changes.
+
+**Your Planning:** When you create a development plan, focus primarily on **Phase 1**. Acknowledge in your plan that subsequent tasks may be handled by Cursor agents post-commit.
